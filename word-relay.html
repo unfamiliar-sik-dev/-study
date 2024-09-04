@@ -1,67 +1,82 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>끝말잇기</title>
+  <title>Document</title>
 </head>
-
 <body>
   <div><span id="order">1</span>번째 참가자</div>
   <div>제시어: <span id="word"></span></div>
   <input type="text">
   <button>입력</button>
+
   <script>
-    const number = Number(prompt('몇 명이 참가하나요?'));
-    const $button = document.querySelector('button');
-    const $input = document.querySelector('input');
-    const $word = document.querySelector('#word');
-    const $order = document.querySelector('#order');
-    let word; // 제시어
-    let newWord; // 현재 단어
-    
-    const onClickButton = () => { 
-      if (!word) { // 제시어가 비어 있는가? 
-        // 비어 있다.
-        word = newWord; // 입력한 단어가 제시어가 된다.
-        $word.textContent = word; // 화면에 제시어 표시 
-        const order = Number($order.textContent); // 현재 순서
-        if(order + 1 > number) {
-          $order.textContent = 1;
-        } else {
-          $order.textContent = order + 1;
-        }
-        $input.value = '';
-        $input.focus();
-        } else { //비어 있지 않다.
-        if (word[word.length -1] === newWord[0]) { // 입력한 단어가 올바른가?
-        // 올바르다 
-        word = newWord; // 현재 단어를 제시어에 저장한다.
-        $word.textContent = word; // 화면에 제시어 표시 
+    const number = Number(prompt('참가자는 몇 명인가요?'));
+    const $input = document.querySelector('input'); // input 태그선택
+    const $button = document.querySelector('button'); // button 태그선택 
+    const $word = document.querySelector('#word'); 
+    const $order = document.querySelector('#order'); 
+
+    let newWord;; // 현재단어, 변수를 빈값으로 두어야지 제시어를 저장하고, 다음 사람이 입력한 단어와 비교해서 맞는 단어인지 판단 가능
+    let word; // 제시어 
+    const onInput = (event) => { 
+      newWord = event.target.value; // 입력한 단어를 현재 단어로 저장
+    };
+
+    // 제시어가 비어 있거나 입력한 단어가 맞는 단어인가? (최적화 코드)
+    const onClickButton =() => { 
+      if (!word || word.at(-1) === newWord[0]) { 
+        word = newWord; // 입력한 단어가 제시어가 됨
+        $word.textContent = word; // 화면에 제시어 표시
         const order = Number($order.textContent);
-        if(order +1 > number) {
+        if (order + 1 > number) {
           $order.textContent = 1;
         } else {
-          // 올바르지 않다.
           $order.textContent = order + 1;
-          $input.value = '';
-          $input.focus;
-        } 
-        
-      } else { // 올브르지 않다
-          alert ('올바르지 않은 단어입니다.')
-          $input.value = '';
-          $input.focus();
         }
+      } else { // 틀린 단어
+        alert('틀린단어입니다!')
       }
+      $input.value = '';
+      $input.focus();
     };
-  
-    const onInput = (event) => {
-      newWord = event.target.value; // 입력하는 단어를 현재 단어로
-    };
-   
-    $button.addEventListener('click', onClickButton);
-    $input.addEventListener('input', onInput);
+    $input.addEventListener('input', onInput); // input 이벤트 연결
+    $button.addEventListener('click', onClickButton); // click 이벤트 연결 
+    // const onClickButton = () => { 
+    //   if (!word) { // 제시어가 비어 있는가? 
+    //     word = newWord; // 입력한 단어가 제시어가 됨 
+    //     $word.textContent = word; // 화면에 제시어 표시
+    //     const order = Number($order.textContent);
+    //     if (order + 1 > number) {
+    //       $order.textContent = 1;
+    //     } else {
+    //       $order.textContent = order + 1;
+    //     }
+    //     $input.value = ''; // 입력창을 비움
+    //     $input.focus(); //커서를 위치시킴
+    //   } else { // 비어 있지 않음
+    //     if (word.at(-1) === newWord[0]) { // 제시어에 맞는 단어인가?
+    //       word = newWord;
+    //       $word.textContent = word;
+    //       const order = Number($order.textContent);
+    //       if (order + 1 > number) {
+    //       $order.textContent=1;
+    //     } else {
+    //       $order.textContent = order + 1;
+    //     }
+    //     $input.value = ''; // 입력창을 비움
+    //     $input.focus(); //커서를 위치시킴
+    //   } else { //틀린단어
+    //     alert('틀린 단어 입니다!')
+    //     $input.value = ''; // 입력창을 비움
+    //     $input.focus(); //커서를 위치시킴
+    //     }
+    //   }
+    // };
+
+
   </script>
 </body>
+
 </html>
